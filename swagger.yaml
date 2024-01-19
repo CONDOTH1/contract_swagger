@@ -1,0 +1,80 @@
+openapi: 3.0.2
+servers:
+  - url: /v1/organizations/{org_id}/contract/contract-states/{contract_id}
+info:
+  description: |-
+    This is the proposed swagger for the contract state payments proposal first iteration
+  version: 1.0.17
+  title: Contract State Payment Proposal
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: thady@luna-protocol.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Payments
+    description: Everything about Contract State Payments
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+paths:
+  /payments:
+    get:
+      tags:
+        - Payments
+      summary: Finds payment contract state
+      description: Multiple values can be provided to filter
+      operationId: findContractStatePayments
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContractStatePayment'
+        '400':
+          description: Invalid status value
+      security:
+        - api_key: []
+components:
+  schemas:
+    ContractStatePayment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - PENDING_APPROVAL
+            - APPROVED
+            - PROCESSING
+            - PARTIALLY_SETTLED
+            - SETTLED
+            - FAILED
+            - CANCELED
+            - REVERSED 
+        amount:
+          type: integer
+        payer_content_type:
+          type: string
+          description: Name of model used to get payer details
+        payer_object_id:
+          type: string
+          format: uuid
+        recipient_content_type:
+          type: string
+          description: Name of model used to get recipient details
+        recipient_object_id:
+          type: string
+          format: uuid
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
