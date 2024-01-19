@@ -73,6 +73,12 @@ components:
         recipient_object_id:
           type: string
           format: uuid
+        payment_id:
+          type: string
+          description: payment provider unique identifier for payment
+        consent_id:
+          type: string
+          description: payment provider unique identifier for consent
   securitySchemes:
     api_key:
       type: apiKey
